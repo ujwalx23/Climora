@@ -2,7 +2,63 @@ import { motion } from 'framer-motion';
 import { useApp } from '@/contexts/AppContext';
 import { t } from '@/lib/i18n';
 import { WeatherData, getWeatherIcon, getWeatherCondition, getTravelAdviceKey, getActivityKey } from '@/lib/weather';
-import { Droplets, Wind, Eye, Gauge, Sunrise, Sunset, Thermometer, MapPin, Compass } from 'lucide-react';
+import { Droplets, Wind, Eye, Gauge, Sunrise, Sunset, Thermometer, MapPin, Compass, Shirt, Heart, Camera, Brain, UtensilsCrossed } from 'lucide-react';
+
+function getWearKey(code: number): string {
+  const c = getWeatherCondition(code);
+  switch (c) {
+    case 'clear': return 'wearSunny';
+    case 'partlyCloudy': case 'cloudy': return 'wearCloudy';
+    case 'rain': case 'drizzle': return 'wearRainy';
+    case 'snow': return 'wearSnowy';
+    case 'thunderstorm': return 'wearStormy';
+    case 'fog': return 'wearFoggy';
+    default: return 'wearCloudy';
+  }
+}
+function getHealthKey(code: number): string {
+  const c = getWeatherCondition(code);
+  switch (c) {
+    case 'clear': return 'healthSunny';
+    case 'partlyCloudy': case 'cloudy': return 'healthCloudy';
+    case 'rain': case 'drizzle': return 'healthRainy';
+    case 'snow': return 'healthSnowy';
+    case 'thunderstorm': return 'healthStormy';
+    case 'fog': return 'healthFoggy';
+    default: return 'healthCloudy';
+  }
+}
+function getPhotoKey(code: number): string {
+  const c = getWeatherCondition(code);
+  switch (c) {
+    case 'clear': case 'partlyCloudy': return 'photoSunny';
+    case 'cloudy': return 'photoCloudy';
+    case 'rain': case 'drizzle': return 'photoRainy';
+    case 'snow': return 'photoSnowy';
+    default: return 'photoCloudy';
+  }
+}
+function getMoodKey(code: number): string {
+  const c = getWeatherCondition(code);
+  switch (c) {
+    case 'clear': case 'partlyCloudy': return 'moodSunny';
+    case 'cloudy': return 'moodCloudy';
+    case 'rain': case 'drizzle': return 'moodRainy';
+    case 'snow': return 'moodSnowy';
+    case 'thunderstorm': return 'moodStormy';
+    default: return 'moodCloudy';
+  }
+}
+function getFoodKey(code: number): string {
+  const c = getWeatherCondition(code);
+  switch (c) {
+    case 'clear': case 'partlyCloudy': return 'foodSunny';
+    case 'cloudy': return 'foodCloudy';
+    case 'rain': case 'drizzle': case 'thunderstorm': case 'fog': return 'foodRainy';
+    case 'snow': return 'foodSnowy';
+    default: return 'foodCloudy';
+  }
+}
 
 interface WeatherDisplayProps {
   data: WeatherData;
@@ -23,13 +79,21 @@ export function WeatherDisplay({ data }: WeatherDisplayProps) {
     { icon: Gauge, label: t('pressure', language), value: `${Math.round(current.pressure)} ${t('hPa', language)}` },
   ];
 
+  const insightCards = [
+    { icon: Shirt, title: t('whatToWear', language), content: t(getWearKey(current.weathercode) as any, language), color: 'text-primary' },
+    { icon: Heart, title: t('healthAlert', language), content: t(getHealthKey(current.weathercode) as any, language), color: 'text-destructive' },
+    { icon: Camera, title: t('photoConditions', language), content: t(getPhotoKey(current.weathercode) as any, language), color: 'text-secondary' },
+    { icon: Brain, title: t('moodWeather', language), content: t(getMoodKey(current.weathercode) as any, language), color: 'text-accent' },
+    { icon: UtensilsCrossed, title: t('localFood', language), content: t(getFoodKey(current.weathercode) as any, language), color: 'text-primary' },
+  ];
+
   return (
     <div className="space-y-6">
       {/* Main weather card */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="glass-card-elevated p-8 relative overflow-hidden"
+        className="glass-card-elevated p-6 sm:p-8 relative overflow-hidden"
       >
         <div className="weather-glow w-64 h-64 -top-20 -end-20" />
         <div className="relative z-10">
@@ -39,14 +103,13 @@ export function WeatherDisplay({ data }: WeatherDisplayProps) {
           </div>
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div>
-              <div className="text-7xl font-extralight text-foreground">
+              <div className="text-6xl sm:text-7xl font-extralight text-foreground">
                 {Math.round(current.temperature)}°
               </div>
               <div className="text-lg text-muted-foreground mt-1">{t(condition, language)}</div>
             </div>
-            <div className="text-8xl">{getWeatherIcon(current.weathercode, !!current.is_day)}</div>
+            <div className="text-7xl sm:text-8xl">{getWeatherIcon(current.weathercode, !!current.is_day)}</div>
           </div>
-
           {daily[0] && (
             <div className="flex gap-4 mt-4 text-sm text-muted-foreground">
               <span>{t('maxTemp', language)}: {Math.round(daily[0].maxTemp)}°</span>
@@ -96,7 +159,7 @@ export function WeatherDisplay({ data }: WeatherDisplayProps) {
       {/* Hourly */}
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="glass-card p-5">
         <h3 className="font-semibold text-foreground mb-4">{t('hourly', language)}</h3>
-        <div className="flex gap-4 overflow-x-auto pb-2">
+        <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-thin">
           {hourly.slice(0, 12).map((h, i) => (
             <div key={i} className="flex flex-col items-center gap-1 min-w-[60px]">
               <span className="text-xs text-muted-foreground">
@@ -134,12 +197,31 @@ export function WeatherDisplay({ data }: WeatherDisplayProps) {
           <Compass className="w-5 h-5 text-accent" />
           <h3 className="font-semibold text-foreground">{t('travelTips', language)}</h3>
         </div>
-        <p className="text-muted-foreground mb-4">{t(travelKey, language)}</p>
+        <p className="text-muted-foreground mb-4 leading-relaxed">{t(travelKey, language)}</p>
         <div>
           <h4 className="text-sm font-semibold text-foreground mb-2">{t('bestActivities', language)}</h4>
-          <p className="text-muted-foreground">{t(activityKey, language)}</p>
+          <p className="text-muted-foreground leading-relaxed">{t(activityKey, language)}</p>
         </div>
       </motion.div>
+
+      {/* Unique Feature Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {insightCards.map((card, i) => (
+          <motion.div
+            key={card.title}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.08 }}
+            className="glass-card p-5"
+          >
+            <div className="flex items-center gap-2 mb-3">
+              <card.icon className={`w-5 h-5 ${card.color}`} />
+              <h4 className="font-semibold text-foreground text-sm">{card.title}</h4>
+            </div>
+            <p className="text-muted-foreground text-sm leading-relaxed">{card.content}</p>
+          </motion.div>
+        ))}
+      </div>
     </div>
   );
 }
