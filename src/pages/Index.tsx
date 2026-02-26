@@ -6,16 +6,26 @@ import { Header } from '@/components/Header';
 import { SearchBar } from '@/components/SearchBar';
 import { WeatherDisplay } from '@/components/WeatherDisplay';
 import { GeoResult, WeatherData, getWeather } from '@/lib/weather';
-import { CloudSun, MapPin } from 'lucide-react';
+import { CloudSun } from 'lucide-react';
 
-const popularCities: { name: string; lat: number; lon: number; country: string; emoji: string }[] = [
-  { name: 'Tokyo', lat: 35.6762, lon: 139.6503, country: 'Japan', emoji: '🗼' },
-  { name: 'Paris', lat: 48.8566, lon: 2.3522, country: 'France', emoji: '🗼' },
-  { name: 'New York', lat: 40.7128, lon: -74.006, country: 'USA', emoji: '🗽' },
-  { name: 'Mumbai', lat: 19.076, lon: 72.8777, country: 'India', emoji: '🏙️' },
-  { name: 'London', lat: 51.5074, lon: -0.1278, country: 'UK', emoji: '🎡' },
-  { name: 'Dubai', lat: 25.2048, lon: 55.2708, country: 'UAE', emoji: '🏜️' },
+const popularCities = [
+  { nameKey: 'cityTokyo' as const, countryKey: 'countryJapan' as const, lat: 35.6762, lon: 139.6503, emoji: '🗼' },
+  { nameKey: 'cityParis' as const, countryKey: 'countryFrance' as const, lat: 48.8566, lon: 2.3522, emoji: '🗼' },
+  { nameKey: 'cityNewYork' as const, countryKey: 'countryUSA' as const, lat: 40.7128, lon: -74.006, emoji: '🗽' },
+  { nameKey: 'cityMumbai' as const, countryKey: 'countryIndia' as const, lat: 19.076, lon: 72.8777, emoji: '🏙️' },
+  { nameKey: 'cityLondon' as const, countryKey: 'countryUK' as const, lat: 51.5074, lon: -0.1278, emoji: '🎡' },
+  { nameKey: 'cityDubai' as const, countryKey: 'countryUAE' as const, lat: 25.2048, lon: 55.2708, emoji: '🏜️' },
 ];
+
+// English names for API
+const cityEnglishNames: Record<string, string> = {
+  cityTokyo: 'Tokyo', cityParis: 'Paris', cityNewYork: 'New York',
+  cityMumbai: 'Mumbai', cityLondon: 'London', cityDubai: 'Dubai',
+};
+const countryEnglishNames: Record<string, string> = {
+  countryJapan: 'Japan', countryFrance: 'France', countryUSA: 'USA',
+  countryIndia: 'India', countryUK: 'UK', countryUAE: 'UAE',
+};
 
 const Index = () => {
   const { language } = useApp();
@@ -38,21 +48,25 @@ const Index = () => {
 
   const handleCityClick = (city: typeof popularCities[0]) => {
     fetchWeather({
-      name: city.name,
+      name: cityEnglishNames[city.nameKey],
       latitude: city.lat,
       longitude: city.lon,
-      country: city.country,
+      country: countryEnglishNames[city.countryKey],
     });
+  };
+
+  const goHome = () => {
+    setWeatherData(null);
+    setError('');
   };
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      <Header onHomeClick={goHome} showHome={!!weatherData || !!loading} />
 
       <main className="max-w-6xl mx-auto px-4 pb-16">
         {!weatherData && !loading ? (
-          /* Hero Section */
-          <div className="pt-16 pb-12">
+          <div className="pt-10 sm:pt-16 pb-12">
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
@@ -68,10 +82,10 @@ const Index = () => {
                 <CloudSun className="w-10 h-10 text-primary-foreground" />
               </motion.div>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-foreground mb-4 leading-tight">
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-foreground mb-4 leading-tight">
                 {t('heroTitle', language)}
               </h1>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
                 {t('heroSubtitle', language)}
               </p>
             </motion.div>
@@ -85,7 +99,6 @@ const Index = () => {
               <SearchBar onSelect={fetchWeather} large />
             </motion.div>
 
-            {/* Popular Cities */}
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
@@ -97,7 +110,7 @@ const Index = () => {
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
                 {popularCities.map((city, i) => (
                   <motion.button
-                    key={city.name}
+                    key={city.nameKey}
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 + i * 0.05 }}
@@ -105,26 +118,21 @@ const Index = () => {
                     className="glass-card p-4 text-center hover:scale-105 transition-transform cursor-pointer group"
                   >
                     <span className="text-3xl mb-2 block">{city.emoji}</span>
-                    <div className="font-medium text-foreground text-sm">{city.name}</div>
-                    <div className="text-xs text-muted-foreground">{city.country}</div>
+                    <div className="font-medium text-foreground text-sm">{t(city.nameKey, language)}</div>
+                    <div className="text-xs text-muted-foreground">{t(city.countryKey, language)}</div>
                   </motion.button>
                 ))}
               </div>
             </motion.div>
           </div>
         ) : (
-          /* Weather View */
           <div className="pt-6">
             <div className="max-w-xl mx-auto mb-6">
               <SearchBar onSelect={fetchWeather} />
             </div>
 
             {loading && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="text-center py-20"
-              >
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-20">
                 <div className="w-12 h-12 border-3 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
                 <p className="text-muted-foreground">{t('loading', language)}</p>
               </motion.div>
