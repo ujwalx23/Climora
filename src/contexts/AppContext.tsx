@@ -12,20 +12,20 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>(() => {
-    return (localStorage.getItem('rim-lang') as Language) || 'en';
+    return (localStorage.getItem('blue-lang') as Language) || 'en';
   });
   const [isDark, setIsDark] = useState(() => {
-    return localStorage.getItem('rim-theme') === 'dark';
+    return localStorage.getItem('blue-theme') === 'dark';
   });
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
-    localStorage.setItem('rim-lang', lang);
+    localStorage.setItem('blue-lang', lang);
   };
 
   const toggleTheme = () => {
     setIsDark(prev => {
-      localStorage.setItem('rim-theme', !prev ? 'dark' : 'light');
+      localStorage.setItem('blue-theme', !prev ? 'dark' : 'light');
       return !prev;
     });
   };

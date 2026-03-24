@@ -66,7 +66,6 @@ type TranslationKeys = {
   language: string;
   maxTemp: string;
   minTemp: string;
-  // Popular city names
   cityTokyo: string;
   cityParis: string;
   cityNewYork: string;
@@ -79,7 +78,6 @@ type TranslationKeys = {
   countryIndia: string;
   countryUK: string;
   countryUAE: string;
-  // Unique features
   whatToWear: string;
   wearSunny: string;
   wearCloudy: string;
@@ -111,11 +109,58 @@ type TranslationKeys = {
   foodRainy: string;
   foodSnowy: string;
   home: string;
+  // New feature keys
+  detectLocation: string;
+  detectingLocation: string;
+  locationError: string;
+  airQuality: string;
+  aqiGood: string;
+  aqiFair: string;
+  aqiModerate: string;
+  aqiPoor: string;
+  aqiVeryPoor: string;
+  aqiHazardous: string;
+  pm25: string;
+  pm10: string;
+  no2: string;
+  ozone: string;
+  weatherAlerts: string;
+  alertExtremeHeat: string;
+  alertHeat: string;
+  alertExtremeCold: string;
+  alertCold: string;
+  alertStorm: string;
+  alertLowVisibility: string;
+  alertExtremeUV: string;
+  alertHighUV: string;
+  alertHighWind: string;
+  alertWind: string;
+  alertPoorAir: string;
+  alertDangerousAir: string;
+  shareWeather: string;
+  shareCopied: string;
+  uvIndexLabel: string;
+  uvLow: string;
+  uvModerate: string;
+  uvHigh: string;
+  uvVeryHigh: string;
+  uvExtreme: string;
+  goldenHour: string;
+  goldenHourMorning: string;
+  goldenHourEvening: string;
+  goldenHourActive: string;
+  goldenHourNext: string;
+  weatherComparison: string;
+  feelsWarmer: string;
+  feelsColder: string;
+  feelsLikeActual: string;
+  windChill: string;
+  heatIndex: string;
 };
 
 const translations: Record<Language, TranslationKeys> = {
   en: {
-    appName: 'Rim',
+    appName: 'Blue',
     tagline: 'Your intelligent weather companion',
     searchPlaceholder: 'Search any city or place...',
     searchButton: 'Search',
@@ -214,9 +259,55 @@ const translations: Record<Language, TranslationKeys> = {
     foodRainy: '🍲 Hot soups, ramen, chai, comfort food, bakery treats, hot chocolate, stews.',
     foodSnowy: '🫕 Fondue, hot pot, mulled wine, roasted chestnuts, hearty stews, warm apple pie.',
     home: 'Home',
+    detectLocation: 'Use My Location',
+    detectingLocation: 'Detecting your location...',
+    locationError: 'Could not detect your location. Please allow location access.',
+    airQuality: 'Air Quality',
+    aqiGood: 'Good — Air quality is excellent. Enjoy outdoor activities!',
+    aqiFair: 'Fair — Air quality is acceptable for most people.',
+    aqiModerate: 'Moderate — Sensitive groups should limit outdoor exposure.',
+    aqiPoor: 'Poor — Everyone should reduce prolonged outdoor activity.',
+    aqiVeryPoor: 'Very Poor — Avoid outdoor activities. Wear a mask if going outside.',
+    aqiHazardous: 'Hazardous — Stay indoors! Dangerous air quality levels.',
+    pm25: 'PM2.5',
+    pm10: 'PM10',
+    no2: 'NO₂',
+    ozone: 'Ozone',
+    weatherAlerts: '⚠️ Weather Alerts',
+    alertExtremeHeat: '🔥 EXTREME HEAT WARNING: Temperature above 40°C! Stay indoors, hydrate constantly, avoid sun exposure.',
+    alertHeat: '☀️ Heat Advisory: High temperatures. Drink plenty of water and stay in shade.',
+    alertExtremeCold: '🥶 EXTREME COLD WARNING: Temperature below -15°C! Risk of frostbite. Limit outdoor exposure.',
+    alertCold: '❄️ Cold Weather Advisory: Dress in warm layers and cover exposed skin.',
+    alertStorm: '⛈️ SEVERE STORM WARNING: Thunderstorms active! Stay indoors and away from windows.',
+    alertLowVisibility: '🌫️ Low Visibility Alert: Visibility under 1km. Drive carefully with fog lights.',
+    alertExtremeUV: '☢️ EXTREME UV WARNING: UV index 11+! Avoid sun exposure. Sunburn in minutes.',
+    alertHighUV: '🔆 High UV Alert: UV index 8+. Apply SPF 50+ sunscreen, wear hat and sunglasses.',
+    alertHighWind: '💨 HIGH WIND WARNING: Winds over 80 km/h! Secure loose objects. Avoid driving.',
+    alertWind: '💨 Wind Advisory: Strong winds expected. Be cautious outdoors.',
+    alertPoorAir: '😷 Poor Air Quality: AQI elevated. Sensitive groups should stay indoors.',
+    alertDangerousAir: '🚨 DANGEROUS AIR QUALITY: AQI very high! Everyone should avoid outdoor activities.',
+    shareWeather: 'Share Weather',
+    shareCopied: 'Weather info copied to clipboard!',
+    uvIndexLabel: 'UV Index',
+    uvLow: 'Low',
+    uvModerate: 'Moderate',
+    uvHigh: 'High',
+    uvVeryHigh: 'Very High',
+    uvExtreme: 'Extreme',
+    goldenHour: 'Golden Hour',
+    goldenHourMorning: 'Morning Golden Hour',
+    goldenHourEvening: 'Evening Golden Hour',
+    goldenHourActive: '✨ Golden Hour is NOW! Perfect light for photography.',
+    goldenHourNext: 'Next golden hour',
+    weatherComparison: 'Real Feel Analysis',
+    feelsWarmer: 'Feels warmer than actual temperature due to humidity and sun.',
+    feelsColder: 'Feels colder than actual temperature due to wind chill.',
+    feelsLikeActual: 'Feels close to the actual temperature.',
+    windChill: 'Wind Chill',
+    heatIndex: 'Heat Index',
   },
   hi: {
-    appName: 'Rim',
+    appName: 'Blue',
     tagline: 'आपका बुद्धिमान मौसम साथी',
     searchPlaceholder: 'कोई भी शहर या स्थान खोजें...',
     searchButton: 'खोजें',
@@ -315,9 +406,55 @@ const translations: Record<Language, TranslationKeys> = {
     foodRainy: '🍲 गर्म सूप, रामेन, चाय, कम्फर्ट फूड, बेकरी।',
     foodSnowy: '🫕 फोंड्यू, हॉट पॉट, गर्म शराब, भुनी चेस्टनट।',
     home: 'होम',
+    detectLocation: 'मेरा स्थान उपयोग करें',
+    detectingLocation: 'आपका स्थान पता लगा रहे हैं...',
+    locationError: 'स्थान पता नहीं चल सका। कृपया स्थान एक्सेस की अनुमति दें।',
+    airQuality: 'वायु गुणवत्ता',
+    aqiGood: 'अच्छी — वायु गुणवत्ता उत्कृष्ट है। बाहरी गतिविधियों का आनंद लें!',
+    aqiFair: 'ठीक — वायु गुणवत्ता अधिकांश लोगों के लिए स्वीकार्य।',
+    aqiModerate: 'मध्यम — संवेदनशील समूहों को बाहरी संपर्क सीमित करना चाहिए।',
+    aqiPoor: 'खराब — सभी को लंबी बाहरी गतिविधि कम करनी चाहिए।',
+    aqiVeryPoor: 'बहुत खराब — बाहरी गतिविधियाँ टालें। बाहर जाएं तो मास्क पहनें।',
+    aqiHazardous: 'खतरनाक — अंदर रहें! खतरनाक वायु गुणवत्ता स्तर।',
+    pm25: 'PM2.5',
+    pm10: 'PM10',
+    no2: 'NO₂',
+    ozone: 'ओज़ोन',
+    weatherAlerts: '⚠️ मौसम चेतावनी',
+    alertExtremeHeat: '🔥 अत्यधिक गर्मी चेतावनी: तापमान 40°C से ऊपर! अंदर रहें, लगातार पानी पीएं।',
+    alertHeat: '☀️ गर्मी सलाह: उच्च तापमान। खूब पानी पीएं और छाया में रहें।',
+    alertExtremeCold: '🥶 अत्यधिक ठंड चेतावनी: तापमान -15°C से नीचे! शीतदंश का खतरा।',
+    alertCold: '❄️ ठंड सलाह: गर्म परतें पहनें और खुली त्वचा ढकें।',
+    alertStorm: '⛈️ गंभीर तूफान चेतावनी: तूफान सक्रिय! अंदर रहें।',
+    alertLowVisibility: '🌫️ कम दृश्यता चेतावनी: 1km से कम। कोहरे की लाइट के साथ चलाएं।',
+    alertExtremeUV: '☢️ अत्यधिक UV चेतावनी: UV 11+! धूप से बचें।',
+    alertHighUV: '🔆 उच्च UV चेतावनी: UV 8+। SPF 50+ सनस्क्रीन लगाएं।',
+    alertHighWind: '💨 तेज़ हवा चेतावनी: 80 km/h से अधिक हवा! ढीली वस्तुएं सुरक्षित करें।',
+    alertWind: '💨 हवा सलाह: तेज़ हवाएं। बाहर सावधान रहें।',
+    alertPoorAir: '😷 खराब वायु गुणवत्ता: संवेदनशील समूह अंदर रहें।',
+    alertDangerousAir: '🚨 खतरनाक वायु गुणवत्ता: सभी बाहरी गतिविधियाँ टालें।',
+    shareWeather: 'मौसम शेयर करें',
+    shareCopied: 'मौसम की जानकारी कॉपी हो गई!',
+    uvIndexLabel: 'यूवी सूचकांक',
+    uvLow: 'कम',
+    uvModerate: 'मध्यम',
+    uvHigh: 'उच्च',
+    uvVeryHigh: 'बहुत उच्च',
+    uvExtreme: 'अत्यधिक',
+    goldenHour: 'गोल्डन आवर',
+    goldenHourMorning: 'सुबह का गोल्डन आवर',
+    goldenHourEvening: 'शाम का गोल्डन आवर',
+    goldenHourActive: '✨ गोल्डन आवर अभी है! फोटोग्राफी के लिए सही रोशनी।',
+    goldenHourNext: 'अगला गोल्डन आवर',
+    weatherComparison: 'वास्तविक अनुभव विश्लेषण',
+    feelsWarmer: 'नमी और धूप के कारण वास्तविक तापमान से गर्म लगता है।',
+    feelsColder: 'हवा की ठंडक के कारण वास्तविक तापमान से ठंडा लगता है।',
+    feelsLikeActual: 'वास्तविक तापमान के करीब महसूस होता है।',
+    windChill: 'विंड चिल',
+    heatIndex: 'हीट इंडेक्स',
   },
   mr: {
-    appName: 'Rim',
+    appName: 'Blue',
     tagline: 'तुमचा हुशार हवामान साथीदार',
     searchPlaceholder: 'कोणतेही शहर किंवा ठिकाण शोधा...',
     searchButton: 'शोधा',
@@ -416,9 +553,55 @@ const translations: Record<Language, TranslationKeys> = {
     foodRainy: '🍲 गरम सूप, चहा, कम्फर्ट फूड, बेकरी.',
     foodSnowy: '🫕 फोंड्यू, हॉट पॉट, गरम वाइन, भाजलेले चेस्टनट.',
     home: 'होम',
+    detectLocation: 'माझे स्थान वापरा',
+    detectingLocation: 'तुमचे स्थान शोधत आहे...',
+    locationError: 'स्थान शोधता आले नाही. कृपया स्थान प्रवेश अनुमती द्या.',
+    airQuality: 'हवा गुणवत्ता',
+    aqiGood: 'चांगली — हवा गुणवत्ता उत्कृष्ट. बाहेर आनंद घ्या!',
+    aqiFair: 'ठीक — बहुतेक लोकांसाठी स्वीकार्य.',
+    aqiModerate: 'मध्यम — संवेदनशील गटांनी बाहेरचा संपर्क मर्यादित ठेवा.',
+    aqiPoor: 'खराब — सर्वांनी लांब बाहेरची सरगर्मी कमी करा.',
+    aqiVeryPoor: 'खूप खराब — बाहेरच्या सरगर्म्या टाळा. मास्क घाला.',
+    aqiHazardous: 'धोकादायक — आत रहा! धोकादायक हवा गुणवत्ता.',
+    pm25: 'PM2.5',
+    pm10: 'PM10',
+    no2: 'NO₂',
+    ozone: 'ओझोन',
+    weatherAlerts: '⚠️ हवामान सूचना',
+    alertExtremeHeat: '🔥 अत्यंत उष्णता चेतावणी: तापमान 40°C वर! आत रहा.',
+    alertHeat: '☀️ उष्णता सल्ला: भरपूर पाणी प्या आणि सावलीत रहा.',
+    alertExtremeCold: '🥶 अत्यंत थंडी चेतावणी: तापमान -15°C खाली! शीतदंशाचा धोका.',
+    alertCold: '❄️ थंडी सल्ला: उबदार कपडे घाला.',
+    alertStorm: '⛈️ गंभीर वादळ चेतावणी: वादळ सक्रिय! आत रहा.',
+    alertLowVisibility: '🌫️ कमी दृश्यमानता: 1km खाली. धुक्याचे दिवे लावा.',
+    alertExtremeUV: '☢️ अत्यंत UV चेतावणी: UV 11+! ऊन टाळा.',
+    alertHighUV: '🔆 उच्च UV सूचना: UV 8+. SPF 50+ सनस्क्रीन लावा.',
+    alertHighWind: '💨 तीव्र वारा चेतावणी: 80 km/h पेक्षा जास्त!',
+    alertWind: '💨 वारा सल्ला: तीव्र वारे. बाहेर सावधान रहा.',
+    alertPoorAir: '😷 खराब हवा: संवेदनशील गट आत रहा.',
+    alertDangerousAir: '🚨 धोकादायक हवा: सर्व बाहेरच्या सरगर्म्या टाळा.',
+    shareWeather: 'हवामान शेअर करा',
+    shareCopied: 'हवामान माहिती कॉपी झाली!',
+    uvIndexLabel: 'यूव्ही निर्देशांक',
+    uvLow: 'कमी',
+    uvModerate: 'मध्यम',
+    uvHigh: 'उच्च',
+    uvVeryHigh: 'खूप उच्च',
+    uvExtreme: 'अत्यंत',
+    goldenHour: 'गोल्डन अवर',
+    goldenHourMorning: 'सकाळचा गोल्डन अवर',
+    goldenHourEvening: 'संध्याकाळचा गोल्डन अवर',
+    goldenHourActive: '✨ गोल्डन अवर आत्ता! फोटोग्राफीसाठी योग्य प्रकाश.',
+    goldenHourNext: 'पुढचा गोल्डन अवर',
+    weatherComparison: 'वास्तविक अनुभव विश्लेषण',
+    feelsWarmer: 'आर्द्रता आणि उन्हामुळे प्रत्यक्ष तापमानापेक्षा गरम वाटते.',
+    feelsColder: 'वाऱ्यामुळे प्रत्यक्ष तापमानापेक्षा थंड वाटते.',
+    feelsLikeActual: 'प्रत्यक्ष तापमानाजवळ वाटते.',
+    windChill: 'विंड चिल',
+    heatIndex: 'हीट इंडेक्स',
   },
   es: {
-    appName: 'Rim',
+    appName: 'Blue',
     tagline: 'Tu compañero meteorológico inteligente',
     searchPlaceholder: 'Buscar cualquier ciudad o lugar...',
     searchButton: 'Buscar',
@@ -517,9 +700,55 @@ const translations: Record<Language, TranslationKeys> = {
     foodRainy: '🍲 Sopas calientes, ramen, café, comida reconfortante.',
     foodSnowy: '🫕 Fondue, hot pot, vino caliente, castañas asadas.',
     home: 'Inicio',
+    detectLocation: 'Usar mi ubicación',
+    detectingLocation: 'Detectando tu ubicación...',
+    locationError: 'No se pudo detectar tu ubicación. Permite el acceso.',
+    airQuality: 'Calidad del Aire',
+    aqiGood: 'Buena — ¡Excelente calidad del aire!',
+    aqiFair: 'Aceptable — Aceptable para la mayoría.',
+    aqiModerate: 'Moderada — Grupos sensibles deben limitar exposición.',
+    aqiPoor: 'Mala — Todos deben reducir actividad al aire libre.',
+    aqiVeryPoor: 'Muy mala — Evita actividades al aire libre. Usa mascarilla.',
+    aqiHazardous: 'Peligrosa — ¡Quédate dentro!',
+    pm25: 'PM2.5',
+    pm10: 'PM10',
+    no2: 'NO₂',
+    ozone: 'Ozono',
+    weatherAlerts: '⚠️ Alertas Meteorológicas',
+    alertExtremeHeat: '🔥 CALOR EXTREMO: ¡Temp. sobre 40°C! Quédate dentro.',
+    alertHeat: '☀️ Aviso de calor: Bebe mucha agua y busca sombra.',
+    alertExtremeCold: '🥶 FRÍO EXTREMO: ¡Temp. bajo -15°C! Riesgo de congelación.',
+    alertCold: '❄️ Aviso de frío: Viste capas cálidas.',
+    alertStorm: '⛈️ TORMENTA SEVERA: ¡Quédate dentro!',
+    alertLowVisibility: '🌫️ Baja visibilidad: Menos de 1km. Usa luces antiniebla.',
+    alertExtremeUV: '☢️ UV EXTREMO: UV 11+! Evita el sol.',
+    alertHighUV: '🔆 UV Alto: UV 8+. Aplica protector SPF 50+.',
+    alertHighWind: '💨 VIENTO FUERTE: ¡Más de 80 km/h!',
+    alertWind: '💨 Aviso de viento: Vientos fuertes. Ten cuidado.',
+    alertPoorAir: '😷 Mala calidad del aire: Grupos sensibles dentro.',
+    alertDangerousAir: '🚨 AIRE PELIGROSO: ¡Evita actividades al aire libre!',
+    shareWeather: 'Compartir clima',
+    shareCopied: '¡Información del clima copiada!',
+    uvIndexLabel: 'Índice UV',
+    uvLow: 'Bajo',
+    uvModerate: 'Moderado',
+    uvHigh: 'Alto',
+    uvVeryHigh: 'Muy alto',
+    uvExtreme: 'Extremo',
+    goldenHour: 'Hora Dorada',
+    goldenHourMorning: 'Hora dorada matutina',
+    goldenHourEvening: 'Hora dorada vespertina',
+    goldenHourActive: '✨ ¡Hora dorada AHORA! Luz perfecta para fotos.',
+    goldenHourNext: 'Próxima hora dorada',
+    weatherComparison: 'Análisis de Sensación Real',
+    feelsWarmer: 'Se siente más cálido por la humedad y el sol.',
+    feelsColder: 'Se siente más frío por el viento.',
+    feelsLikeActual: 'Se siente cerca de la temperatura real.',
+    windChill: 'Sensación de frío',
+    heatIndex: 'Índice de calor',
   },
   fr: {
-    appName: 'Rim',
+    appName: 'Blue',
     tagline: 'Votre compagnon météo intelligent',
     searchPlaceholder: 'Rechercher une ville ou un lieu...',
     searchButton: 'Rechercher',
@@ -618,9 +847,55 @@ const translations: Record<Language, TranslationKeys> = {
     foodRainy: '🍲 Soupes chaudes, ramen, café, plats réconfortants.',
     foodSnowy: '🫕 Fondue, pot-au-feu, vin chaud, marrons grillés.',
     home: 'Accueil',
+    detectLocation: 'Utiliser ma position',
+    detectingLocation: 'Détection de votre position...',
+    locationError: 'Impossible de détecter votre position. Autorisez l\'accès.',
+    airQuality: 'Qualité de l\'Air',
+    aqiGood: 'Bonne — Excellente qualité de l\'air !',
+    aqiFair: 'Acceptable — Acceptable pour la plupart.',
+    aqiModerate: 'Modérée — Les groupes sensibles doivent limiter l\'exposition.',
+    aqiPoor: 'Mauvaise — Réduire l\'activité en extérieur.',
+    aqiVeryPoor: 'Très mauvaise — Évitez l\'extérieur. Portez un masque.',
+    aqiHazardous: 'Dangereuse — Restez à l\'intérieur !',
+    pm25: 'PM2.5',
+    pm10: 'PM10',
+    no2: 'NO₂',
+    ozone: 'Ozone',
+    weatherAlerts: '⚠️ Alertes Météo',
+    alertExtremeHeat: '🔥 CHALEUR EXTRÊME : Temp. au-dessus de 40°C ! Restez à l\'intérieur.',
+    alertHeat: '☀️ Avis de chaleur : Buvez beaucoup d\'eau.',
+    alertExtremeCold: '🥶 FROID EXTRÊME : Temp. sous -15°C ! Risque de gelures.',
+    alertCold: '❄️ Avis de froid : Habillez-vous chaudement.',
+    alertStorm: '⛈️ ORAGE SÉVÈRE : Restez à l\'intérieur !',
+    alertLowVisibility: '🌫️ Faible visibilité : Moins de 1km. Feux de brouillard.',
+    alertExtremeUV: '☢️ UV EXTRÊME : UV 11+ ! Évitez le soleil.',
+    alertHighUV: '🔆 UV Élevé : UV 8+. Crème SPF 50+.',
+    alertHighWind: '💨 VENT FORT : Plus de 80 km/h !',
+    alertWind: '💨 Avis de vent : Vents forts. Soyez prudent.',
+    alertPoorAir: '😷 Mauvaise qualité : Groupes sensibles à l\'intérieur.',
+    alertDangerousAir: '🚨 AIR DANGEREUX : Évitez l\'extérieur !',
+    shareWeather: 'Partager la météo',
+    shareCopied: 'Infos météo copiées !',
+    uvIndexLabel: 'Indice UV',
+    uvLow: 'Faible',
+    uvModerate: 'Modéré',
+    uvHigh: 'Élevé',
+    uvVeryHigh: 'Très élevé',
+    uvExtreme: 'Extrême',
+    goldenHour: 'Heure Dorée',
+    goldenHourMorning: 'Heure dorée du matin',
+    goldenHourEvening: 'Heure dorée du soir',
+    goldenHourActive: '✨ Heure dorée MAINTENANT ! Lumière parfaite pour les photos.',
+    goldenHourNext: 'Prochaine heure dorée',
+    weatherComparison: 'Analyse du Ressenti Réel',
+    feelsWarmer: 'Ressenti plus chaud à cause de l\'humidité et du soleil.',
+    feelsColder: 'Ressenti plus froid à cause du vent.',
+    feelsLikeActual: 'Ressenti proche de la température réelle.',
+    windChill: 'Refroidissement éolien',
+    heatIndex: 'Indice de chaleur',
   },
   ur: {
-    appName: 'Rim',
+    appName: 'Blue',
     tagline: 'آپ کا ذہین موسمی ساتھی',
     searchPlaceholder: 'کوئی بھی شہر یا جگہ تلاش کریں...',
     searchButton: 'تلاش',
@@ -719,6 +994,52 @@ const translations: Record<Language, TranslationKeys> = {
     foodRainy: '🍲 گرم سوپ، رامن، چائے، کمفرٹ فوڈ۔',
     foodSnowy: '🫕 فونڈیو، ہاٹ پاٹ، گرم شراب، بھنی ہوئی چیسٹ نٹ۔',
     home: 'ہوم',
+    detectLocation: 'میری لوکیشن استعمال کریں',
+    detectingLocation: 'آپ کی لوکیشن تلاش کر رہے ہیں...',
+    locationError: 'لوکیشن نہیں مل سکی۔ لوکیشن کی اجازت دیں۔',
+    airQuality: 'ہوا کا معیار',
+    aqiGood: 'اچھا — ہوا کا معیار بہترین ہے!',
+    aqiFair: 'ٹھیک — زیادہ تر لوگوں کے لیے قابل قبول۔',
+    aqiModerate: 'درمیانہ — حساس گروپ باہر کم رہیں۔',
+    aqiPoor: 'خراب — سب باہری سرگرمی کم کریں۔',
+    aqiVeryPoor: 'بہت خراب — باہر نہ جائیں۔ ماسک پہنیں۔',
+    aqiHazardous: 'خطرناک — اندر رہیں!',
+    pm25: 'PM2.5',
+    pm10: 'PM10',
+    no2: 'NO₂',
+    ozone: 'اوزون',
+    weatherAlerts: '⚠️ موسمی انتباہات',
+    alertExtremeHeat: '🔥 شدید گرمی: درجہ حرارت 40°C سے اوپر! اندر رہیں۔',
+    alertHeat: '☀️ گرمی مشورہ: خوب پانی پئیں اور سایہ میں رہیں۔',
+    alertExtremeCold: '🥶 شدید سردی: درجہ حرارت -15°C سے نیچے!',
+    alertCold: '❄️ سردی مشورہ: گرم کپڑے پہنیں۔',
+    alertStorm: '⛈️ شدید طوفان: اندر رہیں!',
+    alertLowVisibility: '🌫️ کم مرئیت: 1km سے کم۔ دھند کی بتیاں لگائیں۔',
+    alertExtremeUV: '☢️ شدید UV: UV 11+! دھوپ سے بچیں۔',
+    alertHighUV: '🔆 زیادہ UV: UV 8+۔ SPF 50+ لگائیں۔',
+    alertHighWind: '💨 تیز ہوا: 80 km/h سے زیادہ!',
+    alertWind: '💨 ہوا مشورہ: تیز ہوائیں۔ باہر محتاط رہیں۔',
+    alertPoorAir: '😷 خراب ہوا: حساس گروپ اندر رہیں۔',
+    alertDangerousAir: '🚨 خطرناک ہوا: باہری سرگرمیاں ترک کریں!',
+    shareWeather: 'موسم شیئر کریں',
+    shareCopied: 'موسم کی معلومات کاپی ہو گئیں!',
+    uvIndexLabel: 'یو وی انڈیکس',
+    uvLow: 'کم',
+    uvModerate: 'درمیانہ',
+    uvHigh: 'زیادہ',
+    uvVeryHigh: 'بہت زیادہ',
+    uvExtreme: 'انتہائی',
+    goldenHour: 'گولڈن آور',
+    goldenHourMorning: 'صبح کا گولڈن آور',
+    goldenHourEvening: 'شام کا گولڈن آور',
+    goldenHourActive: '✨ گولڈن آور ابھی ہے! فوٹوگرافی کے لیے بہترین روشنی۔',
+    goldenHourNext: 'اگلا گولڈن آور',
+    weatherComparison: 'حقیقی احساس تجزیہ',
+    feelsWarmer: 'نمی اور دھوپ کی وجہ سے اصل درجہ حرارت سے گرم محسوس ہوتا ہے۔',
+    feelsColder: 'ہوا کی وجہ سے اصل درجہ حرارت سے ٹھنڈا محسوس ہوتا ہے۔',
+    feelsLikeActual: 'اصل درجہ حرارت کے قریب محسوس ہوتا ہے۔',
+    windChill: 'ونڈ چل',
+    heatIndex: 'ہیٹ انڈیکس',
   },
 };
 

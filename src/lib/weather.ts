@@ -15,6 +15,7 @@ export interface CurrentWeather {
   pressure: number;
   visibility: number;
   is_day: number;
+  uv_index: number;
 }
 
 export interface HourlyForecast {
@@ -30,6 +31,21 @@ export interface DailyForecast {
   weathercode: number;
   sunrise: string;
   sunset: string;
+  uv_index_max: number;
+}
+
+export interface AirQuality {
+  aqi: number;
+  pm2_5: number;
+  pm10: number;
+  no2: number;
+  o3: number;
+}
+
+export interface WeatherAlert {
+  type: 'extreme_heat' | 'extreme_cold' | 'storm' | 'poor_air' | 'low_visibility' | 'high_uv' | 'high_wind';
+  severity: 'warning' | 'danger';
+  messageKey: string;
 }
 
 export interface WeatherData {
@@ -37,6 +53,8 @@ export interface WeatherData {
   hourly: HourlyForecast[];
   daily: DailyForecast[];
   location: GeoResult;
+  airQuality?: AirQuality;
+  alerts: WeatherAlert[];
 }
 
 export async function searchLocations(query: string): Promise<GeoResult[]> {
@@ -54,11 +72,16 @@ export async function searchLocations(query: string): Promise<GeoResult[]> {
 }
 
 export async function getWeather(lat: number, lon: number): Promise<Omit<WeatherData, 'location'>> {
-  const res = await fetch(
-    `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=temperature_2m,weathercode,relativehumidity_2m,apparent_temperature,surface_pressure,visibility&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto&forecast_days=7`
-  );
-  const data = await res.json();
+  const [weatherRes, aqRes] = await Promise.all([
+    fetch(
+      `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=temperature_2m,weathercode,relativehumidity_2m,apparent_temperature,surface_pressure,visibility,uv_index&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max&timezone=auto&forecast_days=7`
+    ),
+    fetch(
+      `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lon}&current=european_aqi,pm2_5,pm10,nitrogen_dioxide,ozone`
+    ).catch(() => null),
+  ]);
 
+  const data = await weatherRes.json();
   const currentHourIndex = new Date().getHours();
 
   const current: CurrentWeather = {
@@ -70,6 +93,7 @@ export async function getWeather(lat: number, lon: number): Promise<Omit<Weather
     pressure: data.hourly.surface_pressure?.[currentHourIndex] ?? 0,
     visibility: (data.hourly.visibility?.[currentHourIndex] ?? 0) / 1000,
     is_day: data.current_weather.is_day,
+    uv_index: data.hourly.uv_index?.[currentHourIndex] ?? 0,
   };
 
   const hourly: HourlyForecast[] = data.hourly.time.slice(currentHourIndex, currentHourIndex + 24).map((time: string, i: number) => ({
@@ -85,9 +109,72 @@ export async function getWeather(lat: number, lon: number): Promise<Omit<Weather
     weathercode: data.daily.weathercode[i],
     sunrise: data.daily.sunrise[i],
     sunset: data.daily.sunset[i],
+    uv_index_max: data.daily.uv_index_max?.[i] ?? 0,
   }));
 
-  return { current, hourly, daily };
+  // Air quality
+  let airQuality: AirQuality | undefined;
+  if (aqRes) {
+    try {
+      const aqData = await aqRes.json();
+      if (aqData.current) {
+        airQuality = {
+          aqi: aqData.current.european_aqi ?? 0,
+          pm2_5: aqData.current.pm2_5 ?? 0,
+          pm10: aqData.current.pm10 ?? 0,
+          no2: aqData.current.nitrogen_dioxide ?? 0,
+          o3: aqData.current.ozone ?? 0,
+        };
+      }
+    } catch {}
+  }
+
+  // Generate alerts
+  const alerts = generateAlerts(current, airQuality);
+
+  return { current, hourly, daily, airQuality, alerts };
+}
+
+function generateAlerts(current: CurrentWeather, aq?: AirQuality): WeatherAlert[] {
+  const alerts: WeatherAlert[] = [];
+
+  if (current.temperature >= 40) {
+    alerts.push({ type: 'extreme_heat', severity: 'danger', messageKey: 'alertExtremeHeat' });
+  } else if (current.temperature >= 35) {
+    alerts.push({ type: 'extreme_heat', severity: 'warning', messageKey: 'alertHeat' });
+  }
+
+  if (current.temperature <= -15) {
+    alerts.push({ type: 'extreme_cold', severity: 'danger', messageKey: 'alertExtremeCold' });
+  } else if (current.temperature <= -5) {
+    alerts.push({ type: 'extreme_cold', severity: 'warning', messageKey: 'alertCold' });
+  }
+
+  if (current.weathercode >= 95) {
+    alerts.push({ type: 'storm', severity: 'danger', messageKey: 'alertStorm' });
+  }
+
+  if (current.visibility < 1) {
+    alerts.push({ type: 'low_visibility', severity: 'warning', messageKey: 'alertLowVisibility' });
+  }
+
+  if (current.uv_index >= 11) {
+    alerts.push({ type: 'high_uv', severity: 'danger', messageKey: 'alertExtremeUV' });
+  } else if (current.uv_index >= 8) {
+    alerts.push({ type: 'high_uv', severity: 'warning', messageKey: 'alertHighUV' });
+  }
+
+  if (current.windspeed >= 80) {
+    alerts.push({ type: 'high_wind', severity: 'danger', messageKey: 'alertHighWind' });
+  } else if (current.windspeed >= 50) {
+    alerts.push({ type: 'high_wind', severity: 'warning', messageKey: 'alertWind' });
+  }
+
+  if (aq && aq.aqi >= 100) {
+    alerts.push({ type: 'poor_air', severity: aq.aqi >= 150 ? 'danger' : 'warning', messageKey: aq.aqi >= 150 ? 'alertDangerousAir' : 'alertPoorAir' });
+  }
+
+  return alerts;
 }
 
 export function getWeatherIcon(code: number, isDay: boolean = true): string {
@@ -144,4 +231,32 @@ export function getActivityKey(code: number): string {
     case 'fog': return 'activityCloudy';
     default: return 'activityCloudy';
   }
+}
+
+export function getUVLevel(uv: number): { level: string; color: string } {
+  if (uv <= 2) return { level: 'low', color: 'text-green-500' };
+  if (uv <= 5) return { level: 'moderate', color: 'text-yellow-500' };
+  if (uv <= 7) return { level: 'high', color: 'text-orange-500' };
+  if (uv <= 10) return { level: 'veryHigh', color: 'text-red-500' };
+  return { level: 'extreme', color: 'text-purple-500' };
+}
+
+export function getAQILevel(aqi: number): { level: string; color: string } {
+  if (aqi <= 20) return { level: 'good', color: 'text-green-500' };
+  if (aqi <= 40) return { level: 'fair', color: 'text-yellow-500' };
+  if (aqi <= 60) return { level: 'moderate', color: 'text-orange-500' };
+  if (aqi <= 80) return { level: 'poor', color: 'text-red-500' };
+  if (aqi <= 100) return { level: 'veryPoor', color: 'text-purple-500' };
+  return { level: 'hazardous', color: 'text-red-700' };
+}
+
+export function getGoldenHour(sunrise: string, sunset: string): { morningStart: Date; morningEnd: Date; eveningStart: Date; eveningEnd: Date } {
+  const sr = new Date(sunrise);
+  const ss = new Date(sunset);
+  return {
+    morningStart: new Date(sr.getTime() - 30 * 60000),
+    morningEnd: new Date(sr.getTime() + 60 * 60000),
+    eveningStart: new Date(ss.getTime() - 60 * 60000),
+    eveningEnd: new Date(ss.getTime() + 30 * 60000),
+  };
 }
