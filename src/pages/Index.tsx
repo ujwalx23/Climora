@@ -6,7 +6,7 @@ import { Header } from '@/components/Header';
 import { SearchBar } from '@/components/SearchBar';
 import { WeatherDisplay } from '@/components/WeatherDisplay';
 import { GeoResult, WeatherData, getWeather } from '@/lib/weather';
-import { CloudSun } from 'lucide-react';
+import { CloudSun, MapPin } from 'lucide-react';
 
 const popularCities = [
   { nameKey: 'cityTokyo' as const, countryKey: 'countryJapan' as const, lat: 35.6762, lon: 139.6503, emoji: '🗼' },
@@ -17,7 +17,6 @@ const popularCities = [
   { nameKey: 'cityDubai' as const, countryKey: 'countryUAE' as const, lat: 25.2048, lon: 55.2708, emoji: '🏜️' },
 ];
 
-// English names for API
 const cityEnglishNames: Record<string, string> = {
   cityTokyo: 'Tokyo', cityParis: 'Paris', cityNewYork: 'New York',
   cityMumbai: 'Mumbai', cityLondon: 'London', cityDubai: 'Dubai',
@@ -32,6 +31,7 @@ const Index = () => {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [detectingLocation, setDetectingLocation] = useState(false);
 
   const fetchWeather = async (location: GeoResult) => {
     setLoading(true);
@@ -53,6 +53,40 @@ const Index = () => {
       longitude: city.lon,
       country: countryEnglishNames[city.countryKey],
     });
+  };
+
+  const handleDetectLocation = () => {
+    if (!navigator.geolocation) {
+      setError(t('locationError', language));
+      return;
+    }
+    setDetectingLocation(true);
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        try {
+          const res = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=&latitude=${pos.coords.latitude}&longitude=${pos.coords.longitude}&count=1`);
+          // Use reverse geocoding via nominatim
+          const revRes = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
+          const revData = await revRes.json();
+          const locationName = revData.address?.city || revData.address?.town || revData.address?.village || 'Your Location';
+          const country = revData.address?.country || '';
+          await fetchWeather({
+            name: locationName,
+            latitude: pos.coords.latitude,
+            longitude: pos.coords.longitude,
+            country,
+          });
+        } catch {
+          setError(t('errorFetching', language));
+        } finally {
+          setDetectingLocation(false);
+        }
+      },
+      () => {
+        setError(t('locationError', language));
+        setDetectingLocation(false);
+      }
+    );
   };
 
   const goHome = () => {
@@ -94,9 +128,25 @@ const Index = () => {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="max-w-xl mx-auto mb-16"
+              className="max-w-xl mx-auto mb-6"
             >
               <SearchBar onSelect={fetchWeather} large />
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.35 }}
+              className="text-center mb-16"
+            >
+              <button
+                onClick={handleDetectLocation}
+                disabled={detectingLocation}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl glass-card hover:scale-105 transition-transform text-primary font-medium text-sm"
+              >
+                <MapPin className="w-4 h-4" />
+                {detectingLocation ? t('detectingLocation', language) : t('detectLocation', language)}
+              </button>
             </motion.div>
 
             <motion.div
