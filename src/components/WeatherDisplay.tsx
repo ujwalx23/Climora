@@ -95,7 +95,7 @@ export function WeatherDisplay({ data }: WeatherDisplayProps) {
   const handleShare = () => {
     const text = `🌤 ${location.name}, ${location.country}\n🌡 ${Math.round(current.temperature)}° (${t(condition, language)})\n💧 ${current.humidity}% | 💨 ${current.windspeed} km/h\n\n— Blue Weather`;
     if (navigator.share) {
-      navigator.share({ title: 'Blue Weather', text }).catch(() => {});
+      navigator.share({ title: 'Climora Weather', text }).catch(() => {});
     } else {
       navigator.clipboard.writeText(text);
       toast.success(t('shareCopied', language));
