@@ -1,6 +1,6 @@
 {
-  "name": "Blue - Weather & Travel Guide",
-  "short_name": "Blue",
+  "name": "Climora - Weather & Travel Guide",
+  "short_name": "Climora",
   "description": "Your intelligent weather companion with travel guidance",
   "start_url": "/",
   "display": "standalone",
