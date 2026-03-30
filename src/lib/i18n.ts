@@ -160,7 +160,7 @@ type TranslationKeys = {
 
 const translations: Record<Language, TranslationKeys> = {
   en: {
-    appName: 'Blue',
+    appName: 'Climora',
     tagline: 'Your intelligent weather companion',
     searchPlaceholder: 'Search any city or place...',
     searchButton: 'Search',
@@ -307,7 +307,7 @@ const translations: Record<Language, TranslationKeys> = {
     heatIndex: 'Heat Index',
   },
   hi: {
-    appName: 'Blue',
+    appName: 'Climora',
     tagline: 'आपका बुद्धिमान मौसम साथी',
     searchPlaceholder: 'कोई भी शहर या स्थान खोजें...',
     searchButton: 'खोजें',
@@ -454,7 +454,7 @@ const translations: Record<Language, TranslationKeys> = {
     heatIndex: 'हीट इंडेक्स',
   },
   mr: {
-    appName: 'Blue',
+    appName: 'Climora',
     tagline: 'तुमचा हुशार हवामान साथीदार',
     searchPlaceholder: 'कोणतेही शहर किंवा ठिकाण शोधा...',
     searchButton: 'शोधा',
@@ -601,7 +601,7 @@ const translations: Record<Language, TranslationKeys> = {
     heatIndex: 'हीट इंडेक्स',
   },
   es: {
-    appName: 'Blue',
+    appName: 'Climora',
     tagline: 'Tu compañero meteorológico inteligente',
     searchPlaceholder: 'Buscar cualquier ciudad o lugar...',
     searchButton: 'Buscar',
@@ -748,7 +748,7 @@ const translations: Record<Language, TranslationKeys> = {
     heatIndex: 'Índice de calor',
   },
   fr: {
-    appName: 'Blue',
+    appName: 'Climora',
     tagline: 'Votre compagnon météo intelligent',
     searchPlaceholder: 'Rechercher une ville ou un lieu...',
     searchButton: 'Rechercher',
@@ -895,7 +895,7 @@ const translations: Record<Language, TranslationKeys> = {
     heatIndex: 'Indice de chaleur',
   },
   ur: {
-    appName: 'Blue',
+    appName: 'Climora',
     tagline: 'آپ کا ذہین موسمی ساتھی',
     searchPlaceholder: 'کوئی بھی شہر یا جگہ تلاش کریں...',
     searchButton: 'تلاش',
